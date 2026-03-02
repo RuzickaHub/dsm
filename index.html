@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dřevařská společnost Mníšek | Dřevěné palety a obaly</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        title: ['Lexend', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#fef2f2',
+                            100: '#fee2e2',
+                            200: '#fecaca',
+                            300: '#fca5a5',
+                            400: '#f87171',
+                            500: '#ef4444',
+                            600: '#dc2626',
+                            700: '#b91c1c',
+                            800: '#991b1b',
+                            900: '#7f1d1d',
+                        },
+                        secondary: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        },
+                        wood: {
+                            50: '#faf7f2',
+                            100: '#f3ece0',
+                            200: '#e6d8c0',
+                            300: '#d8c4a0',
+                            400: '#c9a97d',
+                            500: '#b38b5a',
+                            600: '#8e6c3f',
+                            700: '#6a4f2a',
+                            800: '#45351b',
+                            900: '#2a200f',
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 1s ease-out forwards',
+                        'slide-up': 'slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'scale-in': 'scaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+                        'wood-texture': 'woodTexture 8s infinite linear',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(30px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        },
+                        scaleIn: {
+                            '0%': { transform: 'scale(0.95)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' }
+                        },
+                        woodTexture: {
+                            '0%': { 'background-position': '0% 0%' },
+                            '100%': { 'background-position': '100% 100%' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' }
+                        },
+                        pulse: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0.5' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --primary: #ef4444;
+            --primary-dark: #dc2626;
+        }
+
+        body {
+            scroll-behavior: smooth;
+        }
+
+        #hero {
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.9) 0%, rgba(185, 28, 28, 0.9) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('img/wood-texture-bg.webp') center/cover no-repeat;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 10vw, 4.5rem);
+            line-height: 1.2;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .product-card {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .product-card:hover::after {
+            transform: scaleX(1);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s ease;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .feature-box {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .feature-box:hover {
+            border-left: 4px solid var(--primary);
+            transform: translateX(8px);
+        }
+
+        .modal-enter {
+            animation: fadeIn 0.3s forwards;
+        }
+
+        .modal-exit {
+            animation: fadeOut 0.3s forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+        }
+
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .scroll-indicator {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-15px);
+            }
+
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .wood-texture {
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h100v100H0V0zm10 10h80v80H10V10zm10 10h60v60H20V20zm10 10h40v40H30V30zm10 10h20v20H40V40z' fill='%23b38b5a' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            background-size: 300px 300px;
+        }
+
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .scroll-animate.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #f8fafc;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .section-divider {
+            position: relative;
+            height: 120px;
+            overflow: hidden;
+        }
+
+        .section-divider svg {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 120px;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.05), transparent);
+            transform: translateY(100%);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: -1;
+        }
+
+        .product-card:hover::before {
+            transform: translateY(0);
+        }
+
+        .testimonial-card {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonial-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .testimonial-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .gallery-item {
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+
+        .gallery-item img {
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="antialiased bg-gray-50">
+    <!-- Navigation -->
+    <nav
+        class="bg-primary-700 text-white shadow-lg sticky top-0 z-50 transition-all duration-300 animate__animated animate__fadeInDown">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-10 h-10 flex items-center justify-center bg-primary-600 rounded-lg shadow-md animate__animated animate__pulse animate__infinite animate__slower">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 360"
+                            class="w-6 h-6 fill-current text-white">
+                            <path
+                                d="M4 92v88h164V4H4v88m176-64.5V51h176V4H180v23.5M51 92v41h70V51H51v41m129-5.5V110h176V63H180v23.5m0 58V168h176v-47H180v23.5M192 268v88h47V180h-47v88m58 0v88h47V180h-47v88m59 0v88h47V180h-47v88M4 215.5V239h176v-47H4v23.5m0 58V297h176v-47H4v23.5m0 59V356h176v-47H4v23.5"
+                                fill-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <span class="text-xl font-semibold title-font">DŘEVAŘSKÁ
+                        SPOLEČNOST MNÍŠEK</span>
+                </div>
+
+                <div class="hidden md:flex space-x-8">
+                    <a href="#about" class="nav-link py-2 px-1 font-medium">O nás</a>
+                    <a href="#products" class="nav-link py-2 px-1 font-medium">Výrobky</a>
+                    <a href="#gallery" class="nav-link py-2 px-1 font-medium">Galerie</a>
+                    <a href="#contact" class="nav-link py-2 px-1 font-medium">Kontakt</a>
+                </div>
+
+                <button class="md:hidden focus:outline-none" id="mobile-menu-button">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Mobile menu -->
+            <div class="md:hidden hidden py-4" id="mobile-menu">
+                <div class="flex flex-col space-y-4">
+                    <a href="#about" class="block py-2 px-4 hover:bg-primary-600 rounded transition">O
+                        nás</a>
+                    <a href="#products" class="block py-2 px-4 hover:bg-primary-600 rounded transition">Výrobky</a>
+                    <a href="#gallery" class="block py-2 px-4 hover:bg-primary-600 rounded transition">Galerie</a>
+                    <a href="#contact" class="block py-2 px-4 hover:bg-primary-600 rounded transition">Kontakt</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="text-white flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-primary-900/30 to-secondary-900/90"></div>
+        <div class="absolute inset-0 wood-texture"></div>
+        <div class="absolute inset-0 parallax-bg"></div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="max-w-4xl mx-auto text-center animate__animated animate__fadeIn animate__delay-1s">
+                <h1 class="hero-title font-bold mb-6 title-font leading-tight">Dřevařská
+                    společnost Mníšek s.r.o.</h1>
+                <h2
+                    class="text-2xl md:text-3xl text-primary-300 mb-8 font-medium animate__animated animate__fadeIn animate__delay-1-5s">
+                    bedny
+                    / palety / obaly</h2>
+                <p
+                    class="text-lg md:text-xl mb-12 max-w-2xl mx-auto leading-relaxed animate__animated animate__fadeIn animate__delay-2s">
+                    Specializujeme se na výrobu dřevěných palet a obalů od
+                    roku 2009. Naše řešení zajišťují bezpečnou přepravu
+                    vašeho zboží.
+                </p>
+                <div
+                    class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 animate__animated animate__fadeIn animate__delay-2-5s">
+                    <a href="#contact" class="btn-primary inline-flex items-center">
+                        <span>Galerie produktů naší výroby</span>
+                        <i class="fas fa-chevron-right ml-3"></i>
+                    </a>
+                    <a href="#products"
+                        class="bg-transparent hover:bg-white hover:text-secondary-900 text-white font-semibold py-3 px-8 border-2 border-white rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg inline-flex items-center">
+                        <span>Kontaktujte nás</span>
+                        <i class="fas fa-arrow-right ml-3"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="absolute bottom-10 left-1/2 transform -translate-x-1/2 scroll-indicator animate__animated animate__fadeIn animate__delay-3s">
+            <a href="#about" class="text-white">
+                <i class="fas fa-chevron-down text-2xl"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <!-- Vylepšená sekce O nás: zvýšené odsazení mezi ikonou a textem -->
+    <section id="about" class="relative py-20 bg-wood-50 overflow-hidden">
+        <!-- Dřevěná textura pozadí -->
+        <div class="absolute inset-0 wood-texture opacity-20"></div>
+        <div class="container mx-auto px-6 relative z-10">
+            <!-- Nadpis -->
+            <div class="text-center mb-16 scroll-animate" data-delay="0">
+                <span class="text-primary-700 font-semibold uppercase tracking-wider text-sm">Naše poslání</span>
+                <h2 class="text-4xl font-bold mt-2 mb-4 title-font">Tradice &amp; Inovace</h2>
+                <div class="w-24 h-1 bg-primary-700 mx-auto"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 scroll-animate" data-delay="0.1">
+                <!-- Levá část: časová osa -->
+                <div class="flex flex-col justify-center">
+                    <!-- Odsazení pro větší mezeru mezi ikonou a textem -->
+                    <ul class="relative border-l-2 border-primary-600 pl-20 space-y-12">
+                        <!-- Timeline item -->
+                        <li class="relative">
+                            <span
+                                class="absolute -left-10 top-1/2 transform -translate-y-1/2 bg-primary-600 rounded-full w-8 h-8 flex items-center justify-center text-white">
+                                <i class="fas fa-calendar-alt"></i>
+                            </span>
+                            <h3 class="text-xl font-semibold mb-2 ml-2">Založení 2009</h3>
+                            <p class="text-secondary-700 leading-relaxed ml-2">
+                                Rodinná tradice sahá mnohem dále, ale oficiálně jsme zahájili výrobu
+                                dřevěných palet a obalů v říjnu 2009.
+                            </p>
+                        </li>
+                        <li class="relative">
+                            <span
+                                class="absolute -left-10 top-1/2 transform -translate-y-1/2 bg-primary-600 rounded-full w-8 h-8 flex items-center justify-center text-white">
+                                <i class="fas fa-industry"></i>
+                            </span>
+                            <h3 class="text-xl font-semibold mb-2 ml-2">Rozšíření výroby</h3>
+                            <p class="text-secondary-700 leading-relaxed ml-2">
+                                Postupně jsme přidali speciální linku pro atypické rozměry a malé
+                                série dle požadavků klientů.
+                            </p>
+                        </li>
+                        <li class="relative">
+                            <span
+                                class="absolute -left-10 top-1/2 transform -translate-y-1/2 bg-primary-600 rounded-full w-8 h-8 flex items-center justify-center text-white">
+                                <i class="fas fa-shield-alt"></i>
+                            </span>
+                            <h3 class="text-xl font-semibold mb-2 ml-2">Bezpečnost &amp; Kvalita</h3>
+                            <p class="text-secondary-700 leading-relaxed ml-2">
+                                Každý obal navrhujeme s ohledem na bezpečný transport, testujeme
+                                nosnost a používáme certifikované materiály.
+                            </p>
+                        </li>
+                    </ul>
+                    <div class="text-center mt-12 scroll-animate" data-delay="0.3">
+                        <a href="#contact" class="btn-primary inline-flex items-center">
+                            <span>Galerie výrobků</span>
+                            <i class="fas fa-arrow-right ml-3"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Pravá část: galerie -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div
+                        class="group overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 h-64 relative">
+                        <img src="images/09.webp" alt="Výroba palet"
+                            class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div
+                        class="group overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 h-64 relative">
+                        <img src="images/14.webp" alt="Rodinná firma"
+                            class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div
+                        class="group overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 h-64 relative">
+                        <img src="images/12.webp" alt="Speciální objednávky"
+                            class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div
+                        class="flex items-center justify-center bg-primary-600 rounded-xl h-64 shadow-lg hover:shadow-xl transition-all duration-300">
+                        <div class="text-center">
+                            <div class="text-5xl text-white mb-3 animate-pulse">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-2">14+ Let</h3>
+                            <p class="text-primary-100">zkušeností a tradice</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Stats Section -->
+    <section class="py-16 bg-primary-700 text-white">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8 text-center">
+                <div class="scroll-animate" data-delay="0">
+                    <div
+                        class="text-4xl font-bold mb-2 title-font animate__animated animate__pulse animate__infinite animate__slower">
+                        14+</div>
+                    <p class="text-primary-200">Let zkušeností</p>
+                </div>
+                <div class="scroll-animate" data-delay="0.1">
+                    <div
+                        class="text-4xl font-bold mb-2 title-font animate__animated animate__pulse animate__infinite animate__slower">
+                        500+</div>
+                    <p class="text-primary-200">Spokojených klientů</p>
+                </div>
+                <div class="scroll-animate" data-delay="0.2">
+                    <div
+                        class="text-4xl font-bold mb-2 title-font animate__animated animate__pulse animate__infinite animate__slower">
+                        10k+</div>
+                    <p class="text-primary-200">Vyrobených palet</p>
+                </div>
+                <div class="scroll-animate" data-delay="0.3">
+                    <div
+                        class="text-4xl font-bold mb-2 title-font animate__animated animate__pulse animate__infinite animate__slower">
+                        100%</div>
+                    <p class="text-primary-200">Ruční práce</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 scroll-animate" data-delay="0">
+                <span class="text-primary-600 font-semibold uppercase tracking-wider text-sm">NAŠE
+                    NABÍDKA</span>
+                <h2 class="text-3xl md:text-4xl font-bold mt-2 mb-4 title-font">Kvalitní
+                    dřevěné výrobky</h2>
+                <div class="w-20 h-1 bg-primary-600 mx-auto"></div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Product 1 -->
+                <div class="scroll-animate" data-delay="0.1">
+                    <div class="product-card bg-white p-8 rounded-xl shadow-lg h-full hover:shadow-xl">
+                        <div
+                            class="text-primary-600 text-5xl mb-6 animate__animated animate__pulse animate__infinite animate__slower">
+                            <i class="fas fa-box-open"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4 title-font">Transportní
+                            bedny</h3>
+                        <p class="text-secondary-600 mb-6">
+                            Spolehlivé a odolné řešení pro bezpečný převoz
+                            zboží. Každá bedna je navržena s důrazem na
+                            kvalitu a praktičnost.
+                        </p>
+                        <ul class="space-y-2 text-secondary-700 mb-6">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-primary-600 mt-1 mr-2"></i>
+                                <span>Vlastní konstrukce dle
+                                    požadavků</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-primary-600 mt-1 mr-2"></i>
+                                <span>Různé velikosti a provedení</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-primary-600 mt-1 mr-2"></i>
+                                <span>Možnost opakovaného použití</span>
+                            </li>
+                        </ul>
+                        <a href="#contact"
+                            class="inline-flex items-center text-primary-600 font-semibold hover:text-primary-700 transition">
+                            <span>Zjistit více</span>
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="scroll-animate" data-delay="0.2">
+                    <div class="product-card bg-white p-8 rounded-xl shadow-lg h-full hover:shadow-xl">
+                        <div
+                            class="text-primary-600 text-5xl mb-6 animate__animated animate__pulse animate__infinite animate__slower">
+                            <i class="fas fa-pallet"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4 title-font">Univerzální
+                            palety</h3>
+                        <p class="text-secondary-600 mb-6">
+                            Kvalitní palety splňující nejvyšší standardy
+                            bezpečnosti a odolnosti. Ideální pro širokou
+                            škálu průmyslových potřeb.
+                        </p>
+                        <ul class="space-y-2 text-secondary-700 mb-6">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-primary-600 mt-1 mr-2"></i>
+                                <span>Standardní i nestandardní
+                                    rozměry</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-primary-600 mt-1 mr-2"></i>
+                                <span>Vysoká nosnost a stabilita</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-primary-600 mt-1 mr-2"></i>
+                                <span>Možnost výroby na míru</span>
+                            </li>
+                        </ul>
+                        <a href="#contact"
+                            class="inline-flex items-center text-primary-600 font-semibold hover:text-primary-700 transition">
+                            <span>Zjistit více</span>
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="scroll-animate" data-delay="0.3">
+                    <div class="product-card bg-white p-8 rounded-xl shadow-lg h-full hover:shadow-xl">
+                        <div
+                            class="text-primary-600 text-5xl mb-6 animate__animated animate__pulse animate__infinite animate__slower">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4 title-font">Individuální
+                            zakázky</h3>
+                        <p class="text-secondary-600 mb-6">
+                            Specialisté na atypické rozměry a individuální
+                            požadavky. Vytváříme jedinečné projekty dle
+                            vašich potřeb.
+                        </p>
+                        <ul class="space-y-2 text-secondary-700 mb-6">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-primary-600 mt-1 mr-2"></i>
+                                <span>Konzultace a návrh řešení</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-primary-600 mt-1 mr-2"></i>
+                                <span>Realizace dle technické
+                                    dokumentace</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-primary-600 mt-1 mr-2"></i>
+                                <span>Kompletní servis od návrhu po
+                                    realizaci</span>
+                            </li>
+                        </ul>
+                        <a href="#contact"
+                            class="inline-flex items-center text-primary-600 font-semibold hover:text-primary-700 transition">
+                            <span>Zjistit více</span>
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 scroll-animate" data-delay="0">
+                <span class="text-primary-600 font-semibold uppercase tracking-wider text-sm">NAŠE
+                    PRÁCE</span>
+                <h2 class="text-3xl md:text-4xl font-bold mt-2 mb-4 title-font">Galerie
+                    výrobků</h2>
+                <div class="w-20 h-1 bg-primary-600 mx-auto"></div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div class="scroll-animate" data-delay="0.1">
+                    <div
+                        class="gallery-item rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 h-48 relative">
+                        <img src="images/01.webp" alt="Dřevěné palety" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                <div class="scroll-animate" data-delay="0.15">
+                    <div
+                        class="gallery-item rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 h-48 relative">
+                        <img src="images/02.webp" alt="Dřevěné palety" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                <div class="scroll-animate" data-delay="0.2">
+                    <div
+                        class="gallery-item rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 h-48 relative">
+                        <img src="images/03.webp" alt="Dřevěné palety" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                <div class="scroll-animate" data-delay="0.25">
+                    <div
+                        class="gallery-item rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 h-48 relative">
+                        <img src="images/04.webp" alt="Dřevěné palety" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                <div class="scroll-animate" data-delay="0.1">
+                    <div
+                        class="gallery-item rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 h-48 relative">
+                        <img src="images/05.webp" alt="Dřevěné palety" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                <div class="scroll-animate" data-delay="0.15">
+                    <div
+                        class="gallery-item rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 h-48 relative">
+                        <img src="images/06.webp" alt="Dřevěné palety" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                <div class="scroll-animate" data-delay="0.2">
+                    <div
+                        class="gallery-item rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 h-48 relative">
+                        <img src="images/07.webp" alt="Dřevěné palety" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                <div class="scroll-animate" data-delay="0.25">
+                    <div
+                        class="gallery-item rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 h-48 relative">
+                        <img src="images/08.webp" alt="Dřevěné palety" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-12 scroll-animate" data-delay="0.3">
+                <a href="#" class="btn-primary inline-flex items-center">
+                    <span>Procházet celou galerii</span>
+                    <i class="fas fa-arrow-right ml-3"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-primary-600 text-white">
+        <div class="container mx-auto px-6 text-center">
+            <div class="max-w-3xl mx-auto scroll-animate" data-delay="0">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 title-font">Připraveni
+                    začít spolupráci?</h2>
+                <p class="text-xl mb-8">
+                    Kontaktujte nás ještě dnes a získejte nezávaznou cenovou
+                    nabídku na míru!
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="#contact"
+                        class="btn-primary bg-white text-primary-600 hover:bg-gray-100 hover:text-primary-700">
+                        <i class="fas fa-envelope mr-2"></i> Napište nám
+                    </a>
+                    <a href="tel:+420606820287"
+                        class="btn-primary bg-transparent border-2 border-white hover:bg-white hover:text-primary-600">
+                        <i class="fas fa-phone-alt mr-2"></i> Zavolejte nám
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 scroll-animate" data-delay="0">
+                <span class="text-primary-600 font-semibold uppercase tracking-wider text-sm">KONTAKTUJTE
+                    NÁS</span>
+                <h2 class="text-3xl md:text-4xl font-bold mt-2 mb-4 title-font">Rádi
+                    vám poradíme</h2>
+                <div class="w-20 h-1 bg-primary-600 mx-auto"></div>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-12">
+                <div class="lg:w-1/2 scroll-animate" data-delay="0.1">
+                    <div class="bg-gray-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                        <h3 class="text-2xl font-bold text-primary-700 mb-6 title-font">Dřevařská
+                            společnost Mníšek s.r.o.</h3>
+
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="text-primary-600 mt-1 mr-4 text-xl">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-secondary-800">Adresa:</p>
+                                    <p class="text-secondary-700">Nádražní
+                                        390</p>
+                                    <p class="text-secondary-700">463 31
+                                        Mníšek</p>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-xl font-bold text-secondary-800 mb-4 title-font">Jednatelé
+                                    společnosti:</h4>
+
+                                <div class="flex items-start mb-4">
+                                    <div class="text-primary-600 mt-1 mr-4 text-xl">
+                                        <i class="fas fa-user-tie"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-secondary-800">Jaroslav
+                                            Bříza</p>
+                                        <p class="text-secondary-700">Telefon:
+                                            <a href="tel:+420606820287"
+                                                class="text-primary-600 hover:text-primary-700 hover:underline">+420
+                                                606 820 287</a>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start">
+                                    <div class="text-primary-600 mt-1 mr-4 text-xl">
+                                        <i class="fas fa-user-tie"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-secondary-800">Miroslav
+                                            Endrle</p>
+                                        <p class="text-secondary-700">Telefon:
+                                            <a href="tel:+420602352807"
+                                                class="text-primary-600 hover:text-primary-700 hover:underline">+420
+                                                602 352 807</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <div class="text-primary-600 mr-4 text-xl">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <a href="mailto:info@drevo-liberec.cz"
+                                        class="text-primary-600 hover:text-primary-700 hover:underline">info@drevo-liberec.cz</a>
+                                </div>
+
+                                <div class="flex items-center">
+                                    <div class="text-primary-600 mr-4 text-xl">
+                                        <i class="fas fa-globe"></i>
+                                    </div>
+                                    <a href="https://drevo-liberec.cz/" target="_blank"
+                                        class="text-primary-600 hover:text-primary-700 hover:underline">https://drevo-liberec.cz/</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8">
+                            <h4 class="text-xl font-bold text-secondary-800 mb-4 title-font">Otevírací
+                                doba:</h4>
+                            <div class="space-y-2 text-secondary-700">
+                                <p class="flex justify-between"><span>Pondělí
+                                        - Pátek:</span> <span>7:00 -
+                                        15:30</span></p>
+                                <p class="flex justify-between"><span>Sobota
+                                        - Neděle:</span>
+                                    <span>Zavřeno</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Map Section -->
+                <div class="lg:w-1/2 scroll-animate" data-delay="0.2">
+                    <div
+                        class="bg-gray-50 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 h-full p-0 overflow-hidden">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2108.748129866075!2d15.065063593847903!3d50.83423559841874!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470931a04ff39b0b%3A0xca8299e35753d8d6!2zTsOhZHJhxb5uw60gMzkwLCA0NjMgMzEgTW7DrcWhZWstQ2hyYXN0YXZhLCBDemVjaGlh!5e1!3m2!1sen!2sus!4v1707637383627!5m2!1sen!2sus"
+                            width="100%" height="100%" style="border:0; min-height: 400px;" allowfullscreen
+                            loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="rounded-xl">
+                        </iframe>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating Action Button -->
+    <div class="fixed bottom-6 right-6 z-40">
+        <a href="#contact"
+            class="bg-primary-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-primary-700 transition-all transform hover:scale-110 floating"
+            aria-label="Contact">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31.357 31.357" class="w-6 h-6 fill-current">
+                <path
+                    d="M15.255,0c5.424,0,10.764,2.498,10.764,8.473c0,5.51-6.314,7.629-7.67,9.62c-1.018,1.481-0.678,3.562-3.475,3.562c-1.822,0-2.712-1.482-2.712-2.838c0-5.046,7.414-6.188,7.414-10.343c0-2.287-1.522-3.643-4.066-3.643c-5.424,0-3.306,5.592-7.414,5.592c-1.483,0-2.756-0.89-2.756-2.584C5.339,3.683,10.084,0,15.255,0z M15.044,24.406c1.904,0,3.475,1.566,3.475,3.476c0,1.91-1.568,3.476-3.475,3.476c-1.907,0-3.476-1.564-3.476-3.476C11.568,25.973,13.137,24.406,15.044,24.406z" />
+            </svg>
+        </a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-secondary-900 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flexRow justify-between items-center mb-8">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 flex items-center justify-center bg-primary-600 rounded-lg shadow-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 360"
+                                class="w-6 h-6 fill-current text-white">
+                                <path
+                                    d="M4 92v88h164V4H4v88m176-64.5V51h176V4H180v23.5M51 92v41h70V51H51v41m129-5.5V110h176V63H180v23.5m0 58V168h176v-47H180v23.5M192 268v88h47V180h-47v88m58 0v88h47V180h-47v88m59 0v88h47V180h-47v88M4 215.5V239h176v-47H4v23.5m0 58V297h176v-47H4v23.5m0 59V356h176v-47H4v23.5"
+                                    fill-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <span class="text-xl font-semibold title-font">DŘEVAŘSKÁ
+                            SPOLEČNOST MNÍŠEK</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h4 class="text-lg font-bold mb-4 title-font">O
+                        společnosti</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition">O
+                                nás</a></li>
+                        <li><a href="#products" class="text-gray-400 hover:text-white transition">Výrobky</a></li>
+                        <li><a href="#gallery" class="text-gray-400 hover:text-white transition">Galerie</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition">Kontakt</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-bold mb-4 title-font">Výrobky</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Transportní
+                                bedny</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Univerzální
+                                palety</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Individuální
+                                zakázky</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Speciální
+                                řešení</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-bold mb-4 title-font">Kontakt</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-primary-400 mt-1 mr-2"></i>
+                            <span class="text-gray-400">Nádražní 390, 463 31
+                                Mníšek</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt text-primary-400 mt-1 mr-2"></i>
+                            <span class="text-gray-400">+420 606 820
+                                287</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope text-primary-400 mt-1 mr-2"></i>
+                            <span class="text-gray-400">info@drevo-liberec.cz</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-bold mb-4 title-font">Newsletter</h4>
+                    <p class="text-secondary-400 mb-4">Přihlaste se k odběru novinek a speciálních nabídek.</p>
+                    <form class="flex">
+                        <input type="email" placeholder="Váš email"
+                            class="px-4 py-2 rounded-l-lg focus:outline-none text-secondary-900 w-full">
+                        <button type="submit"
+                            class="bg-primary-600 hover:bg-primary-700 text-secondary-50 px-4 py-2 rounded-r-lg transition">
+                            <i class="fas fa-p paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="border-t border-gray-800 pt-8 text-center text-gray-400">
+
+            <p>&copy; Dřevařská společnost Mníšek s.r.o.</p>
+
+            <p style="opacity: 36%; padding-top: 1.2em; font-size: 0.9rem;">
+                <a style="opacity: 40%;"> web
+                    by </a><a href="vics.cz" style="opacity: 80%;">vics</a>
+            </p>
+        </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function () {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+
+                    // Close mobile menu if open
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+
+        // Scroll animation
+        const scrollAnimateElements = document.querySelectorAll('.scroll-animate');
+
+        const animateOnScroll = () => {
+            scrollAnimateElements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.2;
+
+                if (elementPosition < screenPosition) {
+                    element.classList.add('active');
+                    const delay = element.getAttribute('data-delay');
+                    if (delay) {
+                        element.style.transitionDelay = `${delay}s`;
+                    }
+                }
+            });
+        };
+
+        // Navbar scroll effect
+        const navbar = document.querySelector('nav');
+        let lastScroll = 0;
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll <= 0) {
+                navbar.classList.remove('shadow-xl');
+                navbar.classList.remove('bg-primary-800');
+                navbar.classList.add('bg-primary-700');
+                return;
+            }
+
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                navbar.classList.add('shadow-xl');
+                navbar.classList.remove('bg-primary-700');
+                navbar.classList.add('bg-primary-800');
+            } else if (currentScroll < lastScroll) {
+                navbar.classList.add('shadow-xl');
+                navbar.classList.remove('bg-primary-700');
+                navbar.classList.add('bg-primary-800');
+            }
+
+            lastScroll = currentScroll;
+            animateOnScroll();
+        });
+
+        // Initialize animations on load
+        window.addEventListener('load', () => {
+            animateOnScroll();
+        });
+    </script>
+
+</body>
+
+</html>
